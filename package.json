@@ -2,6 +2,9 @@
   "browser": "lib/xhr-loader.js",
   "author": "Waylon Flinn <waylonflinn@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "test": "browserify test/*.js | testling -x google-chrome"
+  },
   "bugs": {
     "url": "https://github.com/waylonflinn/arrayloader/issues"
   },
