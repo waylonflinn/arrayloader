@@ -1,0 +1,32 @@
+{
+  "browser": "lib/xhr-loader.js",
+  "author": "Waylon Flinn <waylonflinn@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/waylonflinn/arrayloader/issues"
+  },
+  "homepage": "https://github.com/waylonflinn/weblas",
+  "dependencies": {},
+  "description": "TypedArray reading utility, Browserify aware",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "homepage": "https://github.com/waylonflinn/arrayloader",
+  "keywords": [
+    "file",
+    "filesystem",
+    "fs",
+    "xhr"
+  ],
+  "main": "lib/loader.js",
+  "name": "arrayloader",
+  "devDependencies": {
+    "tape": "^4.2.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/waylonflinn/arrayloader.git"
+  },
+  "version": "1.0.0"
+}
