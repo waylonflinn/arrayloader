@@ -2,7 +2,7 @@
 
 TypedArray reading utility, Browserify aware.
 
-Use `fs.readFile` when directly required. Use XHR when being browserified.
+Uses `fs.readFile` in node, and XHR when browserified.
 
 ## Installation
 
