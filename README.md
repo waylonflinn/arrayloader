@@ -30,14 +30,14 @@ choose extensions like this,
 
 extension | TypedArray | numpy dtype
 ---------|------------|------------
-    i8   | `Int8Array`  | int8
-    u8   | `Uint8Array` | uint8
-    i16  | `Int16Array` | int16
-    u16  | `Uint16Array`| uint16
-    i32  | `Int32Array` | int32
-    u32  | `Uint32Array` | uint32
-    f32  | `Float32Array`| float32
-    f64  | `Float64Array` | float64
+i8   | `Int8Array`  | int8
+u8   | `Uint8Array` | uint8
+i16  | `Int16Array` | int16
+u16  | `Uint16Array`| uint16
+i32  | `Int32Array` | int32
+u32  | `Uint32Array` | uint32
+f32  | `Float32Array`| float32
+f64  | `Float64Array` | float64
 
 These extensions differ from the numpy dtype short form in one way. The numpy short dtype specifies number of bytes, this module uses the number of bits (just as in the long form).
 
