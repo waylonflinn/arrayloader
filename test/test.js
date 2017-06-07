@@ -13,68 +13,64 @@ tape("explicit type: Float32Array", function(t){
 	t.plan(4);
 
 	loader.load('./test/data/a.buf', Float32Array, function(err, result){
-			t.assert("lengths equal", result.length === 4096);
+		if(err) t.fail(err);
 
-			var expected = 0.3100370605351459;
-			t.assert("values", close(result[0], expected));
+		t.assert("lengths equal", result.length === 4096);
 
-			expected = 0.67103903629141171;
-			t.assert("values", close(result[1], expected));
+		var expected = 0.3100370605351459;
+		t.assert("values", close(result[0], expected));
 
-			expected = 0.88289048726788111;
-			t.assert("values", close(result[4095], expected));
+		expected = 0.67103903629141171;
+		t.assert("values", close(result[1], expected));
+
+		expected = 0.88289048726788111;
+		t.assert("values", close(result[4095], expected));
 	});
 
 });
 
-tape("extension: Float32Array", function(t){
+tape("automatic type: Float32Array", function(t){
 	t.plan(4);
 
 	loader.load('./test/data/a.f32', function(err, result){
-			t.assert("lengths equal", result.length === 4096);
+		if(err) t.fail(err);
 
-			var expected = 0.3100370605351459;
-			t.assert("values", close(result[0], expected));
+		t.assert("lengths equal", result.length === 4096);
 
-			expected = 0.67103903629141171;
-			t.assert("values", close(result[1], expected));
+		var expected = 0.3100370605351459;
+		t.assert("values", close(result[0], expected));
 
-			expected = 0.88289048726788111;
-			t.assert("values", close(result[4095], expected));
+		expected = 0.67103903629141171;
+		t.assert("values", close(result[1], expected));
+
+		expected = 0.88289048726788111;
+		t.assert("values", close(result[4095], expected));
 	});
 
 });
+
+// TIP: convert to normal array
+// Array.prototype.slice.call(typedArray);
+
 // text mode
+tape("automatic type: text mode", function(t){
+	t.plan(4);
 
-// default to Uint8Array
-
-/*
-loader.load('./test/data/a.buf', Float32Array, function(err, result){
-
-	tape("load: length", function(t){
-		t.plan(1);
+	loader.load('./test/data/a.json', function(err, result){
+		if(err) t.fail(err);
 
 		t.assert("lengths equal", result.length === 4096);
-	});
 
-	tape("load: values 0", function(t){
-		t.plan(1);
 		var expected = 0.3100370605351459;
-
 		t.assert("values", close(result[0], expected));
-	});
 
-	tape("load: values 1", function(t){
-		t.plan(1);
-		var expected = 0.67103903629141171;
-
+		expected = 0.67103903629141171;
 		t.assert("values", close(result[1], expected));
-	});
 
-	tape("load: values 4095", function(t){
-		t.plan(1);
-		var expected = 0.88289048726788111;
-
+		expected = 0.88289048726788111;
 		t.assert("values", close(result[4095], expected));
 	});
-});*/
+
+});
+
+// default to Uint8Array
