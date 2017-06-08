@@ -12,12 +12,13 @@ function close(a, b){
 function type(obj){ return Object.prototype.toString.call(obj).slice(8, -1); }
 
 tape("explicit type: Float32Array", function(t){
-	t.plan(5);
+	t.plan(6);
 
-	loader.load('./test/data/a.buf', "float32", function(err, result){
+	loader.load('./test/data/a.buf', "float32", function(err, result, typ){
 		if(err) return t.end(err);
 
-		t.assert(type(result) == "Float32Array", "type is Float32Array")
+		t.assert(type(result) == "Float32Array", "object is Float32Array");
+		t.equal(typ, "float32", "type is float32");
 
 		t.equal(result.length, 4096, "length is correct");
 
@@ -34,12 +35,13 @@ tape("explicit type: Float32Array", function(t){
 });
 
 tape("automatic type: Float32Array", function(t){
-	t.plan(5);
+	t.plan(6);
 
-	loader.load('./test/data/a.f32', function(err, result){
+	loader.load('./test/data/a.f32', function(err, result, typ){
 		if(err) return t.end(err);
 
-		t.assert(type(result) == "Float32Array", "type is Float32Array")
+		t.assert(type(result) == "Float32Array", "object is Float32Array");
+		t.equal(typ, "float32", "type is float32");
 
 		t.equal(result.length, 4096, "length is correct");
 
@@ -57,13 +59,14 @@ tape("automatic type: Float32Array", function(t){
 
 
 tape("explicit type: falsy (Float32Array)", function(t){
-	t.plan(5);
+	t.plan(6);
 
 	var typ;
-	loader.load('./test/data/a.f32', typ, function(err, result){
+	loader.load('./test/data/a.f32', typ, function(err, result, typ2){
 		if(err) return t.end(err);
 
-		t.assert(type(result) == "Float32Array", "type is Float32Array")
+		t.assert(type(result) == "Float32Array", "object is Float32Array");
+		t.equal(typ2, "float32", "type is float32");
 
 		t.equal(result.length, 4096, "length is correct");
 
@@ -84,12 +87,13 @@ tape("explicit type: falsy (Float32Array)", function(t){
 
 // text mode
 tape("automatic type: json", function(t){
-	t.plan(5);
+	t.plan(6);
 
-	loader.load('./test/data/a.json', function(err, result){
+	loader.load('./test/data/a.json', function(err, result, typ){
 		if(err) return t.end(err);
 
-		t.assert(type(result) == "Array", "type is array")
+		t.assert(type(result) == "Array", "object is array");
+		t.equal(typ, "json", "type is json");
 
 		t.equal(result.length, 4096, "length is correct");
 
@@ -118,12 +122,13 @@ tape("explicit type: unrecognized", function(t){
 });
 
 tape("automatic type: unrecognized extension", function(t){
-	t.plan(5);
+	t.plan(6);
 
-	loader.load('./test/data/a.jso', function(err, b){
+	loader.load('./test/data/a.jso', function(err, b, typ){
 		if(err) return t.end(err);
 
-		t.equal(type(b), "Uint8Array", "type is Uint8Array");
+		t.equal(type(b), "Uint8Array", "object is Uint8Array");
+		t.equal(typ, "uint8", "type is uint8");
 
 		var str = String.fromCharCode.apply(null, b);
 		//console.log(str);
@@ -145,13 +150,14 @@ tape("automatic type: unrecognized extension", function(t){
 
 
 tape("explicity type: falsy (unrecognized extension)", function(t){
-	t.plan(5);
+	t.plan(6);
 
 	var typ;
-	loader.load('./test/data/a.jso', typ, function(err, b){
+	loader.load('./test/data/a.jso', typ, function(err, b, typ){
 		if(err) return t.end(err);
 
-		t.equal(type(b), "Uint8Array", "type is Uint8Array");
+		t.equal(type(b), "Uint8Array", "object is Uint8Array");
+		t.equal(typ, "uint8", "type is uint8");
 
 		var str = String.fromCharCode.apply(null, b);
 		//console.log(str);
@@ -172,12 +178,13 @@ tape("explicity type: falsy (unrecognized extension)", function(t){
 });
 
 tape("explicit type: json", function(t){
-	t.plan(5);
+	t.plan(6);
 
-	loader.load('./test/data/a.txt', "json", function(err, result){
+	loader.load('./test/data/a.txt', "json", function(err, result, typ){
 		if(err) return t.end(err);
 
-		t.assert(type(result) == "Array", "type is array")
+		t.assert(type(result) == "Array", "object is array");
+		t.equal(typ, "json", "type is json");
 
 		t.equal(result.length, 4096, "length is correct");
 
@@ -194,13 +201,14 @@ tape("explicit type: json", function(t){
 });
 
 tape("explicit type: falsy (json)", function(t){
-	t.plan(5);
+	t.plan(6);
 
 	var typ;
-	loader.load('./test/data/a.json', typ, function(err, result){
+	loader.load('./test/data/a.json', typ, function(err, result, typ){
 		if(err) return t.end(err);
 
-		t.assert(type(result) == "Array", "type is array")
+		t.assert(type(result) == "Array", "object is array");
+		t.equal(typ, "json", "type is json");
 
 		t.equal(result.length, 4096, "length is correct");
 
@@ -218,12 +226,13 @@ tape("explicit type: falsy (json)", function(t){
 
 
 tape("automatic type: str", function(t){
-	t.plan(5);
+	t.plan(6);
 
-	loader.load('./test/data/a.txt', function(err, str){
+	loader.load('./test/data/a.txt', function(err, str, typ){
 		if(err) return t.end(err);
 
-		t.assert(type(str) == "String", "type is string")
+		t.assert(type(str) == "String", "object is string");
+		t.equal(typ, "str", "type is str");
 
 		var result = JSON.parse(str);
 		t.equal(result.length, 4096, "length is correct");
@@ -240,12 +249,13 @@ tape("automatic type: str", function(t){
 });
 
 tape("explicit type: str", function(t){
-	t.plan(5);
+	t.plan(6);
 
-	loader.load('./test/data/a.json', "str", function(err, str){
+	loader.load('./test/data/a.json', "str", function(err, str, typ){
 		if(err) return t.end(err);
 
-		t.assert(type(str) == "String", "type is string")
+		t.assert(type(str) == "String", "object is string");
+		t.equal(typ, "str", "type is str");
 
 		var result = JSON.parse(str);
 		t.equal(result.length, 4096, "length is correct");
@@ -263,13 +273,14 @@ tape("explicit type: str", function(t){
 });
 
 tape("explicit type: falsy (str)", function(t){
-	t.plan(5);
+	t.plan(6);
 
 	var typ;
-	loader.load('./test/data/a.txt', typ, function(err, str){
+	loader.load('./test/data/a.txt', typ, function(err, str, typ){
 		if(err) return t.end(err);
 
-		t.assert(type(str) == "String", "type is string")
+		t.assert(type(str) == "String", "object is string");
+		t.equal(typ, "str", "type is str");
 
 		var result = JSON.parse(str);
 		t.equal(result.length, 4096, "length is correct");
