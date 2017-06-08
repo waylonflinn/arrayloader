@@ -1,6 +1,6 @@
 var tape = require('tape'),
-	loader = require('../lib/xhr-loader.js');
-	//loader = require('../lib/loader.js');
+	//loader = require('../lib/xhr-loader.js');
+	loader = require('../lib/loader.js');
 
 var RTOL = 1e-05,
 	ATOL = 1e-07;
@@ -89,7 +89,7 @@ tape("explicit type: default", function(t){
 		t.assert(close(result[0], expected), "values equal");
 
 		expected = 5;
-		t.assert(close(result[1], expected, "values equal"));
+		t.assert(close(result[1], expected), "values equal");
 
 		expected = 255;
 		t.assert(close(result[251], expected), "values equal");
