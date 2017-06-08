@@ -73,4 +73,26 @@ tape("automatic type: text mode", function(t){
 
 });
 
+// TIP: write TypeArray to file
+// fs.writeFileSync("b.buf",  new Buffer(b.buffer));
+
 // default to Uint8Array
+tape("explicit type: default", function(t){
+	t.plan(4);
+
+	loader.load('./test/data/b.buf', true, function(err, result){
+		if(err) t.fail(err);
+
+		t.equal(result.length, 256, "lengths equal");
+
+		var expected = 4;
+		t.assert(close(result[0], expected), "values equal");
+
+		expected = 5;
+		t.assert(close(result[1], expected, "values equal"));
+
+		expected = 255;
+		t.assert(close(result[251], expected), "values equal");
+	});
+
+});
