@@ -12,19 +12,19 @@ function close(a, b){
 tape("explicit type: Float32Array", function(t){
 	t.plan(4);
 
-	loader.load('./test/data/a.buf', Float32Array, function(err, result){
+	loader.load('./test/data/a.buf', "float32", function(err, result){
 		if(err) t.fail(err);
 
-		t.assert("lengths equal", result.length === 4096);
+		t.equal(result.length, 4096, "lengths equal");
 
 		var expected = 0.3100370605351459;
-		t.assert("values", close(result[0], expected));
+		t.assert(close(result[0], expected), "values equal");
 
 		expected = 0.67103903629141171;
-		t.assert("values", close(result[1], expected));
+		t.assert(close(result[1], expected), "values equal");
 
 		expected = 0.88289048726788111;
-		t.assert("values", close(result[4095], expected));
+		t.assert(close(result[4095], expected), "values equal");
 	});
 
 });
@@ -35,16 +35,16 @@ tape("automatic type: Float32Array", function(t){
 	loader.load('./test/data/a.f32', function(err, result){
 		if(err) t.fail(err);
 
-		t.assert("lengths equal", result.length === 4096);
+		t.equal(result.length, 4096, "lengths equal");
 
 		var expected = 0.3100370605351459;
-		t.assert("values", close(result[0], expected));
+		t.assert(close(result[0], expected), "values equal");
 
 		expected = 0.67103903629141171;
-		t.assert("values", close(result[1], expected));
+		t.assert(close(result[1], expected), "values equal");
 
 		expected = 0.88289048726788111;
-		t.assert("values", close(result[4095], expected));
+		t.assert(close(result[4095], expected), "values equal");
 	});
 
 });
@@ -59,16 +59,16 @@ tape("automatic type: text mode", function(t){
 	loader.load('./test/data/a.json', function(err, result){
 		if(err) t.fail(err);
 
-		t.assert("lengths equal", result.length === 4096);
+		t.equal(result.length, 4096, "lengths equal");
 
 		var expected = 0.3100370605351459;
-		t.assert("values", close(result[0], expected));
+		t.assert(close(result[0], expected), "values equal");
 
 		expected = 0.67103903629141171;
-		t.assert("values", close(result[1], expected));
+		t.assert(close(result[1], expected), "values equal");
 
 		expected = 0.88289048726788111;
-		t.assert("values", close(result[4095], expected));
+		t.assert(close(result[4095], expected), "values equal");
 	});
 
 });
