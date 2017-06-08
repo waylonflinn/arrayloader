@@ -26,7 +26,7 @@ f = open('/path/to/array.f32', 'wb')
 f.write(a.astype(np.float32).tostring())
 f.close
 ```
-choose extensions like this,
+choose an extension for your file like this,
 
 extension | TypedArray | numpy dtype
 ---------|------------|------------
@@ -41,11 +41,24 @@ f64  | `Float64Array` | float64
 
 These extensions differ from the numpy dtype short form in one way. The numpy short dtype specifies number of bytes, this module uses the number of bits (just as in the long form).
 
+or (for non-binary types) like this,
+
+extension | type
+---------|-------
+json   | json
+key   | json
+txt  | str
+csv  | str
+tsv  | str
+
+Extensions mapped to `json` will be parsed (with `JSON.parse`) before
+returning.
+
 ## Details
-This module can read text and binary files. It will attempt to infer type for binary files from the extension of the file. If the extension isn't recognized, the type defaults to text "utf-8" and the file is parsed as JSON.
+This module can read text and binary files. It will attempt to infer type from the extension of the file. If the extension isn't recognized, the type defaults to `Uint8Array`.
 
 Type inference can be overridden by supplying a second argument. If an argument
-is supplied but not recognized the type defaults to `Uint8Array`. This argument should be a string containing any of the values listed in the "numpy dtype" column from the table above.
+is supplied but not recognized, the function returns immediately with an error. This argument should be a string containing any of the values listed in the "numpy dtype" column from the first table or the "type" column from the second.
 
 ## Credits
 based on the simple, but fantastic [floader](https://github.com/curvedmark/floader)

@@ -9,42 +9,72 @@ function close(a, b){
 	return Math.abs(a - b) <= ATOL + RTOL * Math.abs(b);
 }
 
+function type(obj){ return Object.prototype.toString.call(obj).slice(8, -1); }
+
 tape("explicit type: Float32Array", function(t){
-	t.plan(4);
+	t.plan(5);
 
 	loader.load('./test/data/a.buf', "float32", function(err, result){
-		if(err) t.fail(err);
+		if(err) return t.end(err);
 
-		t.equal(result.length, 4096, "lengths equal");
+		t.assert(type(result) == "Float32Array", "type is Float32Array")
+
+		t.equal(result.length, 4096, "length is correct");
 
 		var expected = 0.3100370605351459;
-		t.assert(close(result[0], expected), "values equal");
+		t.assert(close(result[0], expected), "value correct");
 
 		expected = 0.67103903629141171;
-		t.assert(close(result[1], expected), "values equal");
+		t.assert(close(result[1], expected), "value correct");
 
 		expected = 0.88289048726788111;
-		t.assert(close(result[4095], expected), "values equal");
+		t.assert(close(result[4095], expected), "value correct");
 	});
 
 });
 
 tape("automatic type: Float32Array", function(t){
-	t.plan(4);
+	t.plan(5);
 
 	loader.load('./test/data/a.f32', function(err, result){
-		if(err) t.fail(err);
+		if(err) return t.end(err);
 
-		t.equal(result.length, 4096, "lengths equal");
+		t.assert(type(result) == "Float32Array", "type is Float32Array")
+
+		t.equal(result.length, 4096, "length is correct");
 
 		var expected = 0.3100370605351459;
-		t.assert(close(result[0], expected), "values equal");
+		t.assert(close(result[0], expected), "value correct");
 
 		expected = 0.67103903629141171;
-		t.assert(close(result[1], expected), "values equal");
+		t.assert(close(result[1], expected), "value correct");
 
 		expected = 0.88289048726788111;
-		t.assert(close(result[4095], expected), "values equal");
+		t.assert(close(result[4095], expected), "value correct");
+	});
+
+});
+
+
+tape("explicit type: falsy (Float32Array)", function(t){
+	t.plan(5);
+
+	var typ;
+	loader.load('./test/data/a.f32', typ, function(err, result){
+		if(err) return t.end(err);
+
+		t.assert(type(result) == "Float32Array", "type is Float32Array")
+
+		t.equal(result.length, 4096, "length is correct");
+
+		var expected = 0.3100370605351459;
+		t.assert(close(result[0], expected), "value correct");
+
+		expected = 0.67103903629141171;
+		t.assert(close(result[1], expected), "value correct");
+
+		expected = 0.88289048726788111;
+		t.assert(close(result[4095], expected), "value correct");
 	});
 
 });
@@ -53,22 +83,24 @@ tape("automatic type: Float32Array", function(t){
 // Array.prototype.slice.call(typedArray);
 
 // text mode
-tape("automatic type: text mode", function(t){
-	t.plan(4);
+tape("automatic type: json", function(t){
+	t.plan(5);
 
 	loader.load('./test/data/a.json', function(err, result){
-		if(err) t.fail(err);
+		if(err) return t.end(err);
 
-		t.equal(result.length, 4096, "lengths equal");
+		t.assert(type(result) == "Array", "type is array")
+
+		t.equal(result.length, 4096, "length is correct");
 
 		var expected = 0.3100370605351459;
-		t.assert(close(result[0], expected), "values equal");
+		t.assert(close(result[0], expected), "value correct");
 
 		expected = 0.67103903629141171;
-		t.assert(close(result[1], expected), "values equal");
+		t.assert(close(result[1], expected), "value correct");
 
 		expected = 0.88289048726788111;
-		t.assert(close(result[4095], expected), "values equal");
+		t.assert(close(result[4095], expected), "value correct");
 	});
 
 });
@@ -77,22 +109,179 @@ tape("automatic type: text mode", function(t){
 // fs.writeFileSync("b.buf",  new Buffer(b.buffer));
 
 // default to Uint8Array
-tape("explicit type: default", function(t){
-	t.plan(4);
+tape("explicit type: unrecognized", function(t){
+	t.plan(1);
 
 	loader.load('./test/data/b.buf', true, function(err, result){
-		if(err) t.fail(err);
+		t.assert(err, "error should be thrown");
+	});
+});
 
-		t.equal(result.length, 256, "lengths equal");
+tape("automatic type: unrecognized extension", function(t){
+	t.plan(5);
 
-		var expected = 4;
-		t.assert(close(result[0], expected), "values equal");
+	loader.load('./test/data/a.jso', function(err, b){
+		if(err) return t.end(err);
 
-		expected = 5;
-		t.assert(close(result[1], expected), "values equal");
+		t.equal(type(b), "Uint8Array", "type is Uint8Array");
 
-		expected = 255;
-		t.assert(close(result[251], expected), "values equal");
+		var str = String.fromCharCode.apply(null, b);
+		//console.log(str);
+
+		var result = JSON.parse(str);
+		t.equal(result.length, 4096, "length is correct");
+
+		var expected = 0.3100370605351459;
+		t.assert(close(result[0], expected), "value correct");
+
+		expected = 0.67103903629141171;
+		t.assert(close(result[1], expected), "value correct");
+
+		expected = 0.88289048726788111;
+		t.assert(close(result[4095], expected), "value correct");
+	});
+
+});
+
+
+tape("explicity type: falsy (unrecognized extension)", function(t){
+	t.plan(5);
+
+	var typ;
+	loader.load('./test/data/a.jso', typ, function(err, b){
+		if(err) return t.end(err);
+
+		t.equal(type(b), "Uint8Array", "type is Uint8Array");
+
+		var str = String.fromCharCode.apply(null, b);
+		//console.log(str);
+
+		var result = JSON.parse(str);
+		t.equal(result.length, 4096, "length is correct");
+
+		var expected = 0.3100370605351459;
+		t.assert(close(result[0], expected), "value correct");
+
+		expected = 0.67103903629141171;
+		t.assert(close(result[1], expected), "value correct");
+
+		expected = 0.88289048726788111;
+		t.assert(close(result[4095], expected), "value correct");
+	});
+
+});
+
+tape("explicit type: json", function(t){
+	t.plan(5);
+
+	loader.load('./test/data/a.txt', "json", function(err, result){
+		if(err) return t.end(err);
+
+		t.assert(type(result) == "Array", "type is array")
+
+		t.equal(result.length, 4096, "length is correct");
+
+		var expected = 0.3100370605351459;
+		t.assert(close(result[0], expected), "value correct");
+
+		expected = 0.67103903629141171;
+		t.assert(close(result[1], expected), "value correct");
+
+		expected = 0.88289048726788111;
+		t.assert(close(result[4095], expected), "value correct");
+	});
+
+});
+
+tape("explicit type: falsy (json)", function(t){
+	t.plan(5);
+
+	var typ;
+	loader.load('./test/data/a.json', typ, function(err, result){
+		if(err) return t.end(err);
+
+		t.assert(type(result) == "Array", "type is array")
+
+		t.equal(result.length, 4096, "length is correct");
+
+		var expected = 0.3100370605351459;
+		t.assert(close(result[0], expected), "value correct");
+
+		expected = 0.67103903629141171;
+		t.assert(close(result[1], expected), "value correct");
+
+		expected = 0.88289048726788111;
+		t.assert(close(result[4095], expected), "value correct");
+	});
+
+});
+
+
+tape("automatic type: str", function(t){
+	t.plan(5);
+
+	loader.load('./test/data/a.txt', function(err, str){
+		if(err) return t.end(err);
+
+		t.assert(type(str) == "String", "type is string")
+
+		var result = JSON.parse(str);
+		t.equal(result.length, 4096, "length is correct");
+
+		var expected = 0.3100370605351459;
+		t.assert(close(result[0], expected), "value correct");
+
+		expected = 0.67103903629141171;
+		t.assert(close(result[1], expected), "value correct");
+
+		expected = 0.88289048726788111;
+		t.assert(close(result[4095], expected), "value correct");
+	});
+});
+
+tape("explicit type: str", function(t){
+	t.plan(5);
+
+	loader.load('./test/data/a.json', "str", function(err, str){
+		if(err) return t.end(err);
+
+		t.assert(type(str) == "String", "type is string")
+
+		var result = JSON.parse(str);
+		t.equal(result.length, 4096, "length is correct");
+
+		var expected = 0.3100370605351459;
+		t.assert(close(result[0], expected), "value correct");
+
+		expected = 0.67103903629141171;
+		t.assert(close(result[1], expected), "value correct");
+
+		expected = 0.88289048726788111;
+		t.assert(close(result[4095], expected), "value correct");
+	});
+
+});
+
+tape("explicit type: falsy (str)", function(t){
+	t.plan(5);
+
+	var typ;
+	loader.load('./test/data/a.txt', typ, function(err, str){
+		if(err) return t.end(err);
+
+		t.assert(type(str) == "String", "type is string")
+
+		var result = JSON.parse(str);
+		t.equal(result.length, 4096, "length is correct");
+
+		var expected = 0.3100370605351459;
+		t.assert(close(result[0], expected), "value correct");
+
+		expected = 0.67103903629141171;
+		t.assert(close(result[1], expected), "value correct");
+
+		expected = 0.88289048726788111;
+		t.assert(close(result[4095], expected), "value correct");
 	});
 
 });
