@@ -1,6 +1,6 @@
 {
   "name": "arrayloader",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "TypedArray reading utility, Browserify aware",
   "author": "Waylon Flinn <waylonflinn@gmail.com>",
   "license": "MIT",

@@ -57,8 +57,8 @@ returning.
 ## Details
 This module can read text and binary files. It will attempt to infer type from the extension of the file. If the extension isn't recognized, the type defaults to `Uint8Array`.
 
-Type inference can be overridden by supplying a second argument. If an argument
-is supplied but not recognized, the function returns immediately with an error. This argument should be a string containing any of the values listed in the "numpy dtype" column from the first table or the "type" column from the second.
+Type inference can be overridden by supplying a second argument. If this argument
+is supplied but not recognized, the function returns immediately with an error. If supplied, this argument should be a string containing any of the values listed in the "numpy dtype" column from the first table or the "type" column from the second.
 
 ## Credits
 based on the simple, but fantastic [floader](https://github.com/curvedmark/floader)
