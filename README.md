@@ -42,7 +42,7 @@ f64  | `Float64Array` | float64
 These extensions differ from the numpy dtype short form in one way. The numpy short dtype specifies number of bytes, this module uses the number of bits (just as in the long form).
 
 ## Details
-This module can read text and binary files. It will attempt to infer type for binary files from the extension of the file. If the extension isn't recognized, the type defaults to text "utf-8".
+This module can read text and binary files. It will attempt to infer type for binary files from the extension of the file. If the extension isn't recognized, the type defaults to text "utf-8" and the file is parsed as JSON.
 
 Type inference can be overridden by supplying a second argument. If an argument
 is supplied but not recognized the type defaults to `Uint8Array`. This argument should be a string containing any of the values listed in the "numpy dtype" column from the table above.
