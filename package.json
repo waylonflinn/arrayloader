@@ -1,7 +1,7 @@
 {
   "name": "arrayloader",
-  "version": "2.2.2",
-  "description": "TypedArray reading utility, Browserify aware",
+  "version": "3.0.1",
+  "description": "Data reading utility (including TypedArray), Browserify aware",
   "author": "Waylon Flinn <waylonflinn@gmail.com>",
   "license": "MIT",
   "main": "lib/loader.js",
@@ -16,12 +16,11 @@
   "bugs": {
     "url": "https://github.com/waylonflinn/arrayloader/issues"
   },
-  "homepage": "https://github.com/waylonflinn/weblas",
+  "homepage": "https://github.com/waylonflinn/arrayloader",
   "directories": {
     "lib": "lib",
     "test": "test"
   },
-  "homepage": "https://github.com/waylonflinn/arrayloader",
   "keywords": [
     "file",
     "filesystem",
@@ -32,6 +31,7 @@
   ],
   "dependencies": {},
   "devDependencies": {
+    "async": "^2.4.1",
     "tape": "^4.2.2"
   }
 }
