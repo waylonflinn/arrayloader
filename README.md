@@ -39,8 +39,6 @@ u32  | `Uint32Array` | uint32
 f32  | `Float32Array`| float32
 f64  | `Float64Array` | float64
 
-These extensions differ from the numpy dtype short form in one way. The numpy short dtype specifies number of bytes, this module uses the number of bits (just as in the long form).
-
 or (for non-binary types) like this,
 
 extension | type
@@ -59,6 +57,9 @@ This module can read text and binary files. It will attempt to infer type from t
 
 Type inference can be overridden by supplying a second argument. If this argument
 is supplied but not recognized, the function returns immediately with an error. If supplied, this argument should be a string containing any of the values listed in the "numpy dtype" column from the first table or the "type" column from the second.
+
+## Notes
+Extensions for binary types differ from the numpy dtype short form in one way. The numpy short dtype specifies number of bytes, this module uses the number of bits (just as in the long form).
 
 ## Credits
 based on the simple, but fantastic [floader](https://github.com/curvedmark/floader)
