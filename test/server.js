@@ -13,7 +13,7 @@ app.all('*', function(req, res, next) {
 
 app.get('/data/json', function(req, res){
 	res.set("Content-Type", "application/json");
-	return res.json([0, 1, 2, 3, 4, 7]);
+	return res.json({"hello" : "world"});
 });
 
 app.get('/data/text', function(req, res){
