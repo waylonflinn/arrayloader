@@ -28,6 +28,20 @@ app.get('/data/uint8', function(req, res){
 	return res.end(new Buffer(arr.buffer));
 });
 
+app.get('/data/int8', function(req, res){
+	res.set("Content-Type", "application/x-int8");
+
+	var arr = new Int8Array([0, 1, 2, 3, 127]);
+	return res.end(new Buffer(arr.buffer));
+});
+
+app.get('/data/uint16', function(req, res){
+	res.set("Content-Type", "application/x-uint16");
+
+	var arr = new Uint16Array([0, 1, 2, 3, 1024]);
+	return res.end(new Buffer(arr.buffer));
+});
+
 app.get('/data/float32', function(req, res){
 	res.set("Content-Type", "application/x-float32");
 
