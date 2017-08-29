@@ -374,3 +374,35 @@ tape("automatic type on api (mime): Uint16Array", function(t){
 	});
 
 });
+
+tape("automatic type on api (mime): str", function(t){
+	t.plan(3);
+
+	var typ;
+	loader.load('http://localhost:8080/data/text', typ, function(err, result, typ2){
+		if(err) return t.end(err);
+
+		t.equal(type(result), "String", "object is String");
+		t.equal(typ2, "str", "type is str");
+
+		var expected = "hello world";
+		t.equal(result, expected, "value correct");
+	});
+
+});
+
+tape("automatic type on api (mime): json", function(t){
+	t.plan(3);
+
+	var typ;
+	loader.load('http://localhost:8080/data/json', typ, function(err, result, typ2){
+		if(err) return t.end(err);
+
+		t.equal(type(result), "Object", "object is Object");
+		t.equal(typ2, "json", "type is json");
+
+		var expected = {"hello":"world"}
+		t.equal(JSON.stringify(result), JSON.stringify(expected), "value correct");
+	});
+
+});
