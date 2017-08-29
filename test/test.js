@@ -343,3 +343,34 @@ tape("automatic type on api (mime): Float32Array", function(t){
 	});
 
 });
+
+tape("automatic type on api (mime): Uint16Array", function(t){
+	t.plan(8);
+
+	var typ;
+	loader.load('http://localhost:8080/data/uint16', typ, function(err, result, typ2){
+		if(err) return t.end(err);
+
+		t.assert(type(result) == "Uint16Array", "object is Uint16Array");
+		t.equal(typ2, "uint16", "type is uint16");
+
+		t.equal(result.length, 5, "length is correct");
+
+		// 0, 1, 2, 3, 1024
+		var expected = 0;
+		t.assert(close(result[0], expected), "value correct");
+
+		expected = 1;
+		t.assert(close(result[1], expected), "value correct");
+
+		expected = 2;
+		t.assert(close(result[2], expected), "value correct");
+
+		expected = 3;
+		t.assert(close(result[3], expected), "value correct");
+
+		expected = 1024;
+		t.assert(close(result[4], expected), "value correct");
+	});
+
+});
