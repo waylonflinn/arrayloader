@@ -57,7 +57,6 @@ tape("automatic type: Float32Array", function(t){
 
 });
 
-
 tape("explicit type: falsy (Float32Array)", function(t){
 	t.plan(6);
 
@@ -293,6 +292,30 @@ tape("explicit type: falsy (str)", function(t){
 
 		expected = 0.88289048726788111;
 		t.assert(close(result[4095], expected), "value correct");
+	});
+
+});
+
+tape("explicit type on api: Float32Array", function(t){
+	t.plan(6);
+
+	var typ = "float32"
+	loader.load('http://localhost:8080/data/float32', typ, function(err, result, typ2){
+		if(err) return t.end(err);
+
+		t.assert(type(result) == "Float32Array", "object is Float32Array");
+		t.equal(typ2, "float32", "type is float32");
+
+		t.equal(result.length, 3, "length is correct");
+
+		var expected = 1.23;
+		t.assert(close(result[0], expected), "value correct");
+
+		expected = 2.71828;
+		t.assert(close(result[1], expected), "value correct");
+
+		expected = 3.141592;
+		t.assert(close(result[2], expected), "value correct");
 	});
 
 });
