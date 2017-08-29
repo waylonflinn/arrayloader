@@ -11,7 +11,7 @@
     "url": "git://github.com/waylonflinn/arrayloader.git"
   },
   "scripts": {
-    "test": "browserify test/*.js | testling -x google-chrome"
+    "test": "browserify test/test.js | testling -x google-chrome"
   },
   "bugs": {
     "url": "https://github.com/waylonflinn/arrayloader/issues"
