@@ -3,6 +3,14 @@ var express = require('express');
 var PORT = 8080;
 var app = express();
 
+// allow cross origin
+app.all('*', function(req, res, next) {
+	res.set("Access-Control-Allow-Origin", "*");
+	res.set("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS");
+	res.set("Access-Control-Allow-Headers", "Content-Type");
+	next();
+});
+
 app.get('/data/json', function(req, res){
 	res.set("Content-Type", "application/json");
 	return res.json([0, 1, 2, 3, 4, 7]);
