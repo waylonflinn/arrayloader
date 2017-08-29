@@ -8,6 +8,8 @@ Uses `fs.readFile` in node, and XHR when browserified.
 
 	npm install arrayloader
 
+Note: relies on `TextDecoder` for API functionality (a polyfill can be found at [inexorabletash/text-encoding](https://github.com/inexorabletash/text-encoding))
+
 ## Example
 
 ```javascript
@@ -28,26 +30,26 @@ f.close
 ```
 choose an extension for your file like this,
 
-extension | TypedArray | numpy dtype
----------|------------|------------
-i8   | `Int8Array`  | int8
-u8   | `Uint8Array` | uint8
-i16  | `Int16Array` | int16
-u16  | `Uint16Array`| uint16
-i32  | `Int32Array` | int32
-u32  | `Uint32Array` | uint32
-f32  | `Float32Array`| float32
-f64  | `Float64Array` | float64
+extension | TypedArray | numpy dtype | mime type
+---------|------------|--------------|-----
+i8   | `Int8Array`  | int8 | application/x-int8
+u8   | `Uint8Array` | uint8 | application/x-uint8
+i16  | `Int16Array` | int16 | application/x-int16
+u16  | `Uint16Array`| uint16 | application/x-uint16
+i32  | `Int32Array` | int32 | application/x-int32
+u32  | `Uint32Array` | uint32 | application/x-uint32
+f32  | `Float32Array`| float32 | application/x-float32
+f64  | `Float64Array` | float64 | application/x-float64
 
 or (for non-binary types) like this,
 
-extension | type
----------|-------
-json   | json
-key   | json
-txt  | str
-csv  | str
-tsv  | str
+extension | type | mime type
+---------|-------|-----
+json   | json | application/json
+key   | json | application/json
+txt  | str | text/plain
+csv  | str | text/plain
+tsv  | str | text/plain
 
 Extensions mapped to `json` will be parsed (with `JSON.parse`) before
 returning.
