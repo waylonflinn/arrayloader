@@ -296,6 +296,12 @@ tape("explicit type: falsy (str)", function(t){
 
 });
 
+/* NOTE: all tests after this point require server.js to be running
+	```
+	node server.js
+	```
+*/
+
 tape("explicit type on api: Float32Array", function(t){
 	t.plan(6);
 
