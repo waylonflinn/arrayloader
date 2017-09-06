@@ -7,7 +7,10 @@ var app = express();
 app.all('*', function(req, res, next) {
 	res.set("Access-Control-Allow-Origin", "*");
 	res.set("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS");
-	res.set("Access-Control-Allow-Headers", "Content-Type");
+	/* Headers exposed via CORS are limited. Allowing more requires the following
+	 https://stackoverflow.com/questions/14686769/xmlhttp-getresponseheader-not-working-for-cors
+	 */
+	//res.set("Access-Control-Expose-Headers", "Content-Type, Date");
 	next();
 });
 
