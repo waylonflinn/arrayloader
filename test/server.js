@@ -52,5 +52,18 @@ app.get('/data/float32', function(req, res){
 	return res.end(new Buffer(arr.buffer));
 });
 
+app.get('/data/uint8encode', function(req, res){
+	res.set("Content-Type", "application/x-uint8-k");
+
+	var arr = new Uint8Array([0, 1, 2]);
+	return res.end(new Buffer(arr.buffer));
+});
+
+app.get('/data/uint8encode.key', function(req, res){
+	res.set("Content-Type", "application/json");
+
+	return res.json(["zero", "one", "two"]);
+});
+
 console.log("starting test data server: " + PORT);
 app.listen(PORT);
