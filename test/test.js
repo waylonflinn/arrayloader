@@ -443,3 +443,25 @@ tape("two step automatic type on api (mime): int8", function(t){
 });
 
 // test type on keyed columns
+tape("two step automatic type on api keyed column (mime): uint8-k", function(t){
+	t.plan(5);
+
+	loader.type('http://localhost:8080/data/uint8encode', function(err, typ){
+		loader.load('http://localhost:8080/data/uint8encode', typ, function(err, result, typ2){
+			if(err) return t.end(err);
+
+			t.equal(type(result), "Uint8Array", "object is Uint8Array");
+			t.equal(typ, "uint8-k", "type is uint8-k");
+
+			var expected = [0, 1, 2];
+			var expected = 0;
+			t.assert(close(result[0], expected), "value correct");
+
+			expected = 1;
+			t.assert(close(result[1], expected), "value correct");
+
+			expected = 2;
+			t.assert(close(result[2], expected), "value correct");
+		});
+	});
+});
