@@ -4,8 +4,8 @@
   "description": "Data reading utility (including TypedArray), Browserify aware",
   "author": "Waylon Flinn <waylonflinn@gmail.com>",
   "license": "MIT",
-  "main": "lib/loader.js",
-  "browser": "lib/xhr-loader.js",
+  "main": "lib/index.js",
+  "browser": "lib/browser.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/waylonflinn/arrayloader.git"

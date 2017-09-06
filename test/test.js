@@ -1,6 +1,5 @@
 var tape = require('tape'),
-	loader = require('../lib/xhr-loader.js');
-	//loader = require('../lib/loader.js');
+	loader = require('../lib/browser.js');
 
 var RTOL = 1e-05,
 	ATOL = 1e-07;
