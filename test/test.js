@@ -1,5 +1,6 @@
 var tape = require('tape'),
 	loader = require('../lib/browser.js');
+//	loader = require('../lib/index.js');
 
 var RTOL = 1e-05,
 	ATOL = 1e-07;
@@ -90,7 +91,7 @@ tape("automatic type: json", function(t){
 	loader.load('./test/data/a.json', function(err, result, typ){
 		if(err) return t.end(err);
 
-		t.assert(type(result) == "Array", "object is array");
+		t.equal(type(result), "Array", "object is Array");
 		t.equal(typ, "json", "type is json");
 
 		t.equal(result.length, 4096, "length is correct");
@@ -528,5 +529,62 @@ tape("two step automatic type on api keyed column (mime): uint8-k", function(t){
 			expected = 2;
 			t.assert(close(result[2], expected), "value correct");
 		});
+	});
+});
+
+// test type on keyed columns
+tape("typeall: files", function(t){
+	t.plan(3);
+
+	var files = ['a.json', 'a.f32', 'c.u8'];
+	var prefix = './test/data/';
+	var urls = files.map(function(file){ return prefix + file});
+	var expected = ['json', 'float32', 'uint8']; //
+
+	loader.typeall(urls, function(err, types){
+		t.equal(types[0], expected[0], 'type correct');
+		t.equal(types[1], expected[1], 'type correct');
+		t.equal(types[2], expected[2], 'type correct');
+	});
+});
+
+// test type on keyed columns
+tape("typeall: api", function(t){
+	t.plan(4);
+
+	var files = ['float32', 'int8', 'json', 'uint16'];
+	var prefix = 'http://localhost:8080/data/';
+	var urls = files.map(function(file){ return prefix + file});
+	var expected = files.slice(0); //
+
+	loader.typeall(urls, function(err, types){
+		t.equal(types[0], expected[0], 'type correct');
+		t.equal(types[1], expected[1], 'type correct');
+		t.equal(types[2], expected[2], 'type correct');
+		t.equal(types[3], expected[3], 'type correct');
+	});
+});
+
+// test type on keyed columns
+tape("loadall: files", function(t){
+	t.plan(6);
+
+	var files = ['a.json', 'a.f32', 'c.u8'];
+	var prefix = './test/data/';
+	var urls = files.map(function(file){ return prefix + file});
+	var expected = ['json', 'float32', 'uint8']; //
+
+	loader.loadall(urls, function(err, results){
+		var result = results[0];
+		t.equal(type(result), 'Array', 'type correct');
+		t.assert(close(result[1], 0.67103903629141171), 'value correct');
+
+		result = results[1];
+		t.equal(type(result), 'Float32Array', 'type correct');
+		t.assert(close(result[1], 0.67103903629141171), 'value correct');
+
+		result = results[2];
+		t.equal(type(result), 'Uint8Array', 'type correct');
+		t.assert(close(result[3], 4), 'value correct');
 	});
 });
