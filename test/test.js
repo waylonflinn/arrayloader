@@ -616,7 +616,36 @@ tape("loadall: api", function(t){
 });
 
 // test type on keyed columns
-tape("loadall and typeall: api", function(t){
+tape("typeall and loadall: files", function(t){
+	t.plan(9);
+
+	var files = ['a.json', 'a.f32', 'c.u8'];
+	var prefix = './test/data/';
+	var urls = files.map(function(file){ return prefix + file});
+
+	loader.typeall(urls, function(err, types){
+		loader.loadall(urls, types, function(err, results){
+			var result = results[0];
+
+			t.equal(types[0], 'json', 'type correct');
+			t.equal(type(result), 'Array', 'type correct');
+			t.assert(close(result[1], 0.67103903629141171), 'value correct');
+
+			result = results[1];
+			t.equal(types[1], 'float32', 'type correct');
+			t.equal(type(result), 'Float32Array', 'type correct');
+			t.assert(close(result[1], 0.67103903629141171), 'value correct');
+
+			result = results[2];
+			t.equal(types[2], 'uint8', 'type correct');
+			t.equal(type(result), 'Uint8Array', 'type correct');
+			t.assert(close(result[3], 4), 'value correct');
+		});
+	});
+});
+
+// test type on keyed columns
+tape("typeall and loadall: api", function(t){
 	t.plan(12);
 
 	var files = ['float32', 'int8', 'json', 'uint16'];
