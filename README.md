@@ -8,8 +8,6 @@ Uses `fs.readFile` in node, and XHR when browserified.
 
 	npm install arrayloader
 
-Note: REST API functionality relies on [`TextDecoder`](https://caniuse.com/#feat=textencoder) (a polyfill can be found at [inexorabletash/text-encoding](https://github.com/inexorabletash/text-encoding))
-
 ## Example
 
 ```javascript
