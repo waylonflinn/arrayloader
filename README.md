@@ -22,9 +22,8 @@ write compatible arrays from `numpy` like this,
 
 ```python
 # given array 'a'
-f = open('/path/to/array.f32', 'wb')
-f.write(a.astype(np.float32).tostring())
-f.close
+with open('/path/to/array.f32', 'wb') as f:
+	f.write(a.astype(np.float32).tostring())
 ```
 choose an extension for your file like this,
 
@@ -57,6 +56,13 @@ This module can read text and binary files. It will attempt to infer type from t
 
 Type inference can be overridden by supplying a second argument. If this argument
 is supplied but not recognized, the function returns immediately with an error. If supplied, this argument should be a string containing any of the values listed in the "numpy dtype" column from the first table or the "type" column from the second.
+
+## Extras
+Files in this format can be *read* into python/numpy like this,
+```python
+with open(doc_dir + 'array.f32', 'rb') as f:
+    a = np.fromstring(f.read(), dtype="float32")
+```
 
 ## Notes
 Extensions for binary types differ from the numpy dtype short form in one way. The numpy short dtype specifies number of bytes, this module uses the number of bits (just as in the long form).
