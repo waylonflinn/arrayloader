@@ -11,7 +11,8 @@
     "url": "git://github.com/waylonflinn/arrayloader.git"
   },
   "scripts": {
-    "test": "browserify test/test.js | testling -x xdg-open"
+    "test": "browserify test/test.js | testling -x xdg-open",
+    "build" : "browserify lib/browser.js --s arrayloader > dist/arrayloader.js"
   },
   "bugs": {
     "url": "https://github.com/waylonflinn/arrayloader/issues"
