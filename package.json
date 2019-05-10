@@ -30,7 +30,8 @@
     "TypedArray"
   ],
   "dependencies": {
-    "async": "^2.4.1"
+    "async": "^2.4.1",
+    "lz4js": "^0.2.0"
   },
   "devDependencies": {
     "express": "^4.15.4",

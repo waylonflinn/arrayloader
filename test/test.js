@@ -1,6 +1,6 @@
 var tape = require('tape'),
-	loader = require('../lib/browser.js');
-//	loader = require('../lib/index.js');
+//	loader = require('../lib/browser.js');
+	loader = require('../lib/index.js');
 
 var RTOL = 1e-05,
 	ATOL = 1e-07;
@@ -57,11 +57,128 @@ tape("automatic type: Float32Array", function(t){
 
 });
 
+tape("automatic type: compressed Float32Array", function(t){
+	t.plan(6);
+
+	loader.load('./test/data/a.f32.lz4', function(err, result, typ){
+		if(err) return t.end(err);
+
+		t.assert(type(result) == "Float32Array", "object is Float32Array");
+		t.equal(typ, "float32", "type is float32");
+
+		t.equal(result.length, 4096, "length is correct");
+
+		var expected = 0.3100370605351459;
+		t.assert(close(result[0], expected), "value correct");
+
+		expected = 0.67103903629141171;
+		t.assert(close(result[1], expected), "value correct");
+
+		expected = 0.88289048726788111;
+		t.assert(close(result[4095], expected), "value correct");
+	});
+
+});
+
+tape("automatic type: compressed tensor Float32Array", function(t){
+	t.plan(7);
+
+	loader.load('./test/data/a.t16.t4.f32.lz4', function(err, result, typ){
+		if(err) return t.end(err);
+
+		var shape = [64, 16, 4];
+
+		t.assert(type(result) == "Float32Array", "object is Float32Array");
+		t.equal(typ[0], "float32", "type is float32");
+		t.deepEqual(typ.slice(1), shape, `shape is [${shape.join(", ")}]`)
+
+		t.equal(result.length, 4096, "length is correct");
+
+		var expected = 0.3100370605351459;
+		t.assert(close(result[0], expected), "value correct");
+
+		expected = 0.67103903629141171;
+		t.assert(close(result[1], expected), "value correct");
+
+		expected = 0.88289048726788111;
+		t.assert(close(result[4095], expected), "value correct");
+	});
+
+});
+
+tape("two step automatic type: compressed tensor Float32Array", function(t){
+	t.plan(11);
+
+	loader.type('./test/data/a.t16.t4.f32.lz4', function(err, typ){
+
+		var shape = [64, 16, 4];
+		t.assert(Array.isArray(typ), "autotype is Array");
+		t.equal(typ[0], "lz4", "first type is compressed");
+		t.equal(typ[1], "float32", "second type is float32");
+		t.deepEqual(typ.slice(2), shape.slice(1), `shape is [${shape.slice(1).join(", ")}]`)
+		loader.load('./test/data/a.t16.t4.f32.lz4', function(err, result, typ2){
+			if(err) return t.end(err);
+
+
+			t.assert(type(result) == "Float32Array", "object is Float32Array");
+			t.equal(typ2[0], "float32", "type is float32");
+			t.deepEqual(typ2.slice(1), shape, `shape is [${shape.join(", ")}]`)
+
+			t.equal(result.length, 4096, "length is correct");
+
+			var expected = 0.3100370605351459;
+			t.assert(close(result[0], expected), "value correct");
+
+			expected = 0.67103903629141171;
+			t.assert(close(result[1], expected), "value correct");
+
+			expected = 0.88289048726788111;
+			t.assert(close(result[4095], expected), "value correct");
+		});
+	})
+
+});
+
+
+tape("automatic type: compressed tensor Float32Array (malformed tensor description)", function(t){
+	t.plan(2);
+
+	loader.load('./test/data/a.t16.t5.f32.lz4', function(err, result, typ){
+		t.assert(typeof(err) !== "undefined");
+		t.equal(err, "Tensor dimensions ([16, 5]) not consistent with array size (4096).");
+	});
+
+});
+
 tape("explicit type: falsy (Float32Array)", function(t){
 	t.plan(6);
 
 	var typ;
 	loader.load('./test/data/a.f32', typ, function(err, result, typ2){
+		if(err) return t.end(err);
+
+		t.assert(type(result) == "Float32Array", "object is Float32Array");
+		t.equal(typ2, "float32", "type is float32");
+
+		t.equal(result.length, 4096, "length is correct");
+
+		var expected = 0.3100370605351459;
+		t.assert(close(result[0], expected), "value correct");
+
+		expected = 0.67103903629141171;
+		t.assert(close(result[1], expected), "value correct");
+
+		expected = 0.88289048726788111;
+		t.assert(close(result[4095], expected), "value correct");
+	});
+
+});
+
+tape("explicit type: falsy (compressed Float32Array)", function(t){
+	t.plan(6);
+
+	var typ;
+	loader.load('./test/data/a.f32.lz4', typ, function(err, result, typ2){
 		if(err) return t.end(err);
 
 		t.assert(type(result) == "Float32Array", "object is Float32Array");
@@ -305,6 +422,41 @@ tape("two step automatic type: uint8", function(t){
 
 			t.equal(type(result), "Uint8Array", "object is Uint8Array");
 			t.equal(typ, "uint8", "type is uint8");
+			t.equal(typ2, "uint8", "result type is uint8");
+
+			var expected = 0;
+			t.assert(close(result[0], expected), "value correct");
+
+			expected = 1;
+			t.assert(close(result[1], expected), "value correct");
+
+			expected = 2;
+			t.assert(close(result[2], expected), "value correct");
+
+			expected = 4;
+			t.assert(close(result[3], expected), "value correct");
+
+			expected = 8;
+			t.assert(close(result[4], expected), "value correct");
+
+			expected = 16;
+			t.assert(close(result[5], expected), "value correct");
+		});
+	});
+});
+
+tape("two step automatic type: uint8 compressed", function(t){
+	t.plan(11);
+
+	loader.type('./test/data/c.u8.lz4', function(err, typ){
+		//console.log(typ);
+		loader.load('./test/data/c.u8.lz4', typ, function(err, result, typ2){
+			if(err) return t.end(err);
+
+			t.equal(type(result), "Uint8Array", "object is Uint8Array");
+			t.assert(Array.isArray(typ), "autotype is Array");
+			t.equal(typ[0], "lz4", "first type is lz4");
+			t.equal(typ[1], "uint8", "second type is uint8");
 			t.equal(typ2, "uint8", "result type is uint8");
 
 			var expected = 0;
