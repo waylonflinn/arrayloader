@@ -83,14 +83,14 @@ tape("automatic type: compressed Float32Array", function(t){
 tape("automatic type: compressed tensor Float32Array", function(t){
 	t.plan(7);
 
-	loader.load('./test/data/a.t16.t4.f32.lz4', function(err, result, typ){
+	loader.load('./test/data/a.t16.t4.f32.lz4', function(err, result, typ, shap){
 		if(err) return t.end(err);
 
 		var shape = [64, 16, 4];
 
 		t.assert(type(result) == "Float32Array", "object is Float32Array");
-		t.equal(typ[0], "float32", "type is float32");
-		t.deepEqual(typ.slice(1), shape, `shape is [${shape.join(", ")}]`)
+		t.equal(typ, "float32", "type is float32");
+		t.deepEqual(shap, shape, `shape is [${shape.join(", ")}]`)
 
 		t.equal(result.length, 4096, "length is correct");
 
@@ -109,14 +109,14 @@ tape("automatic type: compressed tensor Float32Array", function(t){
 tape("automatic type: tensor Float32Array", function(t){
 	t.plan(7);
 
-	loader.load('./test/data/a.t16.t4.f32', function(err, result, typ){
+	loader.load('./test/data/a.t16.t4.f32', function(err, result, typ, shap){
 		if(err) return t.end(err);
 
 		var shape = [64, 16, 4];
 
 		t.assert(type(result) == "Float32Array", "object is Float32Array");
-		t.equal(typ[0], "float32", "type is float32");
-		t.deepEqual(typ.slice(1), shape, `shape is [${shape.join(", ")}]`)
+		t.equal(typ, "float32", "type is float32");
+		t.deepEqual(shap, shape, `shape is [${shape.join(", ")}]`)
 
 		t.equal(result.length, 4096, "length is correct");
 
@@ -133,22 +133,21 @@ tape("automatic type: tensor Float32Array", function(t){
 });
 
 tape("two step automatic type: compressed tensor Float32Array", function(t){
-	t.plan(11);
+	t.plan(10);
 
-	loader.type('./test/data/a.t16.t4.f32.lz4', function(err, typ){
+	loader.type('./test/data/a.t16.t4.f32.lz4', function(err, typ, compres, shap){
 
 		var shape = [64, 16, 4];
-		t.assert(Array.isArray(typ), "autotype is Array");
-		t.equal(typ[0], "lz4", "first type is compressed");
-		t.equal(typ[1], "float32", "second type is float32");
-		t.deepEqual(typ.slice(2), shape.slice(1), `shape is [${shape.slice(1).join(", ")}]`)
-		loader.load('./test/data/a.t16.t4.f32.lz4', function(err, result, typ2){
+		t.equal(compres, "lz4", "first type is compressed");
+		t.equal(typ, "float32", "second type is float32");
+		t.deepEqual(shap, shape.slice(1), `shape is [${shape.slice(1).join(", ")}]`)
+		loader.load('./test/data/a.t16.t4.f32.lz4', function(err, result, typ2, shap2){
 			if(err) return t.end(err);
 
 
 			t.assert(type(result) == "Float32Array", "object is Float32Array");
-			t.equal(typ2[0], "float32", "type is float32");
-			t.deepEqual(typ2.slice(1), shape, `shape is [${shape.join(", ")}]`)
+			t.equal(typ2, "float32", "type is float32");
+			t.deepEqual(shap2, shape, `shape is [${shape.join(", ")}]`)
 
 			t.equal(result.length, 4096, "length is correct");
 
@@ -166,21 +165,20 @@ tape("two step automatic type: compressed tensor Float32Array", function(t){
 });
 
 tape("two step automatic type: tensor Float32Array", function(t){
-	t.plan(10);
+	t.plan(9);
 
-	loader.type('./test/data/a.t16.t4.f32', function(err, typ){
+	loader.type('./test/data/a.t16.t4.f32', function(err, typ, compres, shap){
 
 		var shape = [64, 16, 4];
-		t.assert(Array.isArray(typ), "autotype is Array");
-		t.equal(typ[0], "float32", "second type is float32");
-		t.deepEqual(typ.slice(1), shape.slice(1), `shape is [${shape.slice(1).join(", ")}]`)
-		loader.load('./test/data/a.t16.t4.f32', typ, function(err, result, typ2){
+		t.equal(typ, "float32", "type is float32");
+		t.deepEqual(shap, shape.slice(1), `shape is [${shape.slice(1).join(", ")}]`)
+		loader.load('./test/data/a.t16.t4.f32', typ, compres, shap, function(err, result, typ2, shap2){
 			if(err) return t.end(err);
 
 
 			t.assert(type(result) == "Float32Array", "object is Float32Array");
-			t.equal(typ2[0], "float32", "type is float32");
-			t.deepEqual(typ2.slice(1), shape, `shape is [${shape.join(", ")}]`)
+			t.equal(typ2, "float32", "type is float32");
+			t.deepEqual(shap2, shape, `shape is [${shape.join(", ")}]`)
 
 			t.equal(result.length, 4096, "length is correct");
 
@@ -504,17 +502,16 @@ tape("two step automatic type: uint8", function(t){
 });
 
 tape("two step automatic type: uint8 compressed", function(t){
-	t.plan(11);
+	t.plan(10);
 
-	loader.type('./test/data/c.u8.lz4', function(err, typ){
+	loader.type('./test/data/c.u8.lz4', function(err, typ, compres){
 		//console.log(typ);
-		loader.load('./test/data/c.u8.lz4', typ, function(err, result, typ2){
+		loader.load('./test/data/c.u8.lz4', typ, compres, function(err, result, typ2){
 			if(err) return t.end(err);
 
 			t.equal(type(result), "Uint8Array", "object is Uint8Array");
-			t.assert(Array.isArray(typ), "autotype is Array");
-			t.equal(typ[0], "lz4", "first type is lz4");
-			t.equal(typ[1], "uint8", "second type is uint8");
+			t.equal(compres, "lz4", "compression is lz4");
+			t.equal(typ, "uint8", "type is uint8");
 			t.equal(typ2, "uint8", "result type is uint8");
 
 			var expected = 0;
